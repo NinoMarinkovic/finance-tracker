@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Ledger — Personal Finance</title>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600&family=Lora:ital,wght@0,400;1,400&display=swap"
+    rel="stylesheet"
+  />
+  <link rel="stylesheet" href="/static/style.css" />
+</head>
+<body>
+
+  <div id="screen-register" class="screen active">
+    <div class="auth-container">
+      <div class="brand">
+        <div class="brand-icon">
+          <svg viewBox="0 0 20 20" fill="none">
+            <rect x="3" y="7" width="14" height="10" rx="2" stroke="currentColor" stroke-width="1.6"/>
+            <path d="M7 7V5.5a3 3 0 016 0V7" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+          </svg>
+        </div>
+        <span class="brand-name">Ledger</span>
+      </div>
+      <div class="auth-card">
+        <div class="auth-header">
+          <h1 class="auth-title">Create account</h1>
+          <p class="auth-subtitle">Sign up to start tracking your finances.</p>
+        </div>
+        <div id="reg-alert" class="alert" role="alert"></div>
+        <div class="form-group">
+          <label for="reg-name">Full name</label>
+          <input id="reg-name" type="text" placeholder="Jane Doe" autocomplete="name" />
+        </div>
+        <div class="form-group">
+          <label for="reg-email">Email address</label>
+          <input id="reg-email" type="email" placeholder="jane@example.com" autocomplete="email" />
+        </div>
+        <div class="form-group">
+          <label for="reg-password">Password</label>
+          <input id="reg-password" type="password" placeholder="Create a password" autocomplete="new-password" />
+          <p class="form-hint">6–20 chars · uppercase &amp; lowercase · digit · special char (@$#%)</p>
+        </div>
+        <div class="form-group">
+          <label for="reg-cc">Credit card number</label>
+          <input id="reg-cc" type="text" placeholder="Visa or Mastercard" autocomplete="cc-number" />
+          <p class="form-hint">Visa (starts with 4) or Mastercard (starts with 51–55)</p>
+        </div>
+        <button class="btn btn-primary btn-block" onclick="doRegister()">Create account</button>
+        <p class="auth-switch">
+          Already have an account? <a onclick="showScreen('login')">Sign in</a>
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <div id="screen-login" class="screen">
+    <div class="auth-container">
+      <div class="brand">
+        <div class="brand-icon">
+          <svg viewBox="0 0 20 20" fill="none">
+            <rect x="3" y="7" width="14" height="10" rx="2" stroke="currentColor" stroke-width="1.6"/>
+            <path d="M7 7V5.5a3 3 0 016 0V7" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+          </svg>
+        </div>
+        <span class="brand-name">Ledger</span>
+      </div>
+      <div class="auth-card">
+        <div class="auth-header">
+          <h1 class="auth-title">Welcome back</h1>
+          <p class="auth-subtitle">Sign in to your account.</p>
+        </div>
+        <div id="login-alert" class="alert" role="alert"></div>
+        <div id="attempts-badge" class="attempts-badge"></div>
+        <div class="form-group">
+          <label for="login-email">Email address</label>
+          <input id="login-email" type="email" placeholder="jane@example.com" autocomplete="email" />
+        </div>
+        <div class="form-group">
+          <label for="login-password">Password</label>
+          <input
+            id="login-password"
+            type="password"
+            placeholder="Your password"
+            autocomplete="current-password"
+            onkeydown="if(event.key==='Enter') doLogin()"
+          />
+        </div>
+        <div class="btn-row">
+          <button class="btn btn-primary" style="flex:1" onclick="doLogin()">Sign in</button>
+          <button class="btn btn-ghost" onclick="showScreen('register')">Back</button>
+        </div>
+        <p class="auth-switch">
+          Don't have an account? <a onclick="showScreen('register')">Register</a>
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <div id="screen-dashboard" class="screen">
+    <div class="dash-layout">
+      <aside class="sidebar">
+        <div class="sidebar-brand">
+          <div class="brand-icon small">
+            <svg viewBox="0 0 20 20" fill="none">
+              <rect x="3" y="7" width="14" height="10" rx="2" stroke="currentColor" stroke-width="1.6"/>
+              <path d="M7 7V5.5a3 3 0 016 0V7" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+            </svg>
+          </div>
+          <span class="brand-name">Ledger</span>
+        </div>
+        <div class="balance-widget">
+          <p class="balance-label">Total Balance</p>
+          <p class="balance-amount" id="sb-balance">€0.00</p>
+          <p class="balance-card" id="sb-card">—</p>
+        </div>
+        <nav class="sidebar-nav">
+          <button class="nav-btn active" data-panel="panel-add" onclick="switchPanel(this)">
+            <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round">
+              <circle cx="10" cy="10" r="7.5"/>
+              <line x1="10" y1="6.5" x2="10" y2="13.5"/>
+              <line x1="6.5" y1="10" x2="13.5" y2="10"/>
+            </svg>
+            Add Transaction
+          </button>
+          <button class="nav-btn" data-panel="panel-list" onclick="switchPanel(this)">
+            <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round">
+              <rect x="3.5" y="3.5" width="13" height="13" rx="2"/>
+              <line x1="6.5" y1="7.5" x2="13.5" y2="7.5"/>
+              <line x1="6.5" y1="10"  x2="13.5" y2="10"/>
+              <line x1="6.5" y1="12.5" x2="10"  y2="12.5"/>
+            </svg>
+            Transactions
+          </button>
+          <button class="nav-btn" data-panel="panel-cat" onclick="switchPanel(this)">
+            <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round">
+              <polyline points="2.5,14 7,9 10,12 13.5,7.5 17.5,11.5"/>
+              <line x1="2.5" y1="17" x2="17.5" y2="17"/>
+            </svg>
+            By Category
+          </button>
+        </nav>
+        <div class="sidebar-footer">
+          <div class="user-chip">
+            <div class="user-avatar" id="sb-avatar">J</div>
+            <span id="sb-name" class="user-name">—</span>
+          </div>
+          <button class="signout-btn" onclick="doLogout()" title="Sign out">
+            <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round">
+              <path d="M13 3h3.5a1 1 0 011 1v12a1 1 0 01-1 1H13"/>
+              <polyline points="8.5,13.5 13,10 8.5,6.5"/>
+              <line x1="3" y1="10" x2="13" y2="10"/>
+            </svg>
+          </button>
+        </div>
+      </aside>
+
+      <main class="dash-main">
+        <div id="panel-add" class="panel active">
+          <div class="panel-header">
+            <h2 class="panel-title">New Transaction</h2>
+            <p class="panel-sub">Record an income or an expense below.</p>
+          </div>
+          <div id="tx-alert" class="alert" role="alert"></div>
+          <div class="form-grid">
+            <div class="form-group">
+              <label for="tx-amount">Amount (€)</label>
+              <input id="tx-amount" type="number" placeholder="0.00" step="0.01" />
+              <p class="form-hint">Use a negative value for expenses, e.g. −42.50</p>
+            </div>
+            <div class="form-group">
+              <label for="tx-cat">Category</label>
+              <input id="tx-cat" type="text" placeholder="e.g. Groceries" />
+            </div>
+            <div class="form-group form-group--full">
+              <label for="tx-desc">Description</label>
+              <input id="tx-desc" type="text" placeholder="Optional note…" />
+            </div>
+          </div>
+          <button class="btn btn-primary" onclick="doAddTx()" style="margin-top:24px">
+            Add transaction
+          </button>
+        </div>
+
+        <div id="panel-list" class="panel">
+          <div class="panel-header">
+            <h2 class="panel-title">Transactions</h2>
+            <p class="panel-sub">All entries, sorted by most recent.</p>
+          </div>
+          <div class="tx-table">
+            <div class="tx-thead">
+              <span>Description</span>
+              <span>Category</span>
+              <span>Date</span>
+              <span class="align-right">Amount</span>
+            </div>
+            <div id="tx-tbody"></div>
+          </div>
+        </div>
+
+        <div id="panel-cat" class="panel">
+          <div class="panel-header">
+            <h2 class="panel-title">By Category</h2>
+            <p class="panel-sub">Calculate the total for any category.</p>
+          </div>
+          <div class="cat-form">
+            <div class="form-group" style="max-width:320px">
+              <label for="cat-input">Category</label>
+              <input
+                id="cat-input"
+                type="text"
+                placeholder="e.g. Groceries"
+                onkeydown="if(event.key==='Enter') doFilterCat()"
+              />
+            </div>
+            <button class="btn btn-primary" onclick="doFilterCat()">Calculate</button>
+          </div>
+          <div id="cat-result" class="cat-result"></div>
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <script src="/static/app.js"></script>
+</body>
+</html>
