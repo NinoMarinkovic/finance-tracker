@@ -1,11 +1,3 @@
-"""
-Ledger – Flask Backend mit MySQL
-=================================
-Starte die App:
-    python project.py
-
-Öffne dann: http://127.0.0.1:5000
-"""
 
 import re
 import hashlib
@@ -21,11 +13,12 @@ app.secret_key = 'ledger_secret_key_2024'
 # ──────────────────────────────────────────
 
 DB_CONFIG = {
-    'host':     'localhost',
-    'user':     'root',
-    'password': '',
-    'db':       'ledger',
-    'charset':  'utf8mb4',
+    'host':        '127.0.0.1',
+    'port':        3307,
+    'user':        'root',
+    'password':    '',
+    'db':          'ledger',
+    'charset':     'utf8mb4',
     'cursorclass': pymysql.cursors.DictCursor
 }
 
@@ -34,7 +27,6 @@ def get_db():
 
 
 def init_db():
-    """Erstellt die Tabellen falls sie noch nicht existieren."""
     conn = get_db()
     try:
         with conn.cursor() as cur:
@@ -65,7 +57,7 @@ def init_db():
 
 
 # ══════════════════════════════════════════
-# Validation (aus project.py)
+# Validation
 # ══════════════════════════════════════════
 
 def validate_email(email):
@@ -82,7 +74,7 @@ def validate_credit_card(number):
 
 
 # ══════════════════════════════════════════
-# Security (aus project.py)
+# Security
 # ══════════════════════════════════════════
 
 def hash_password(password):
@@ -99,7 +91,7 @@ def mask_credit_card(number):
 
 
 # ══════════════════════════════════════════
-# Business Logic (aus project.py)
+# Business Logic
 # ══════════════════════════════════════════
 
 def calculate_total(transactions):
@@ -143,11 +135,9 @@ def api_register():
     conn = get_db()
     try:
         with conn.cursor() as cur:
-            # Prüfen ob Email schon existiert
             cur.execute("SELECT id FROM users WHERE email = %s", (email,))
             if cur.fetchone():
                 return jsonify(error='An account with this email already exists.'), 400
-
             cur.execute(
                 "INSERT INTO users (name, email, password_hash, credit_card) VALUES (%s, %s, %s, %s)",
                 (name, email, hash_password(password), mask_credit_card(cc))
@@ -176,7 +166,6 @@ def api_login():
     if not user:
         return jsonify(error='No account found for this email.'), 404
 
-    # Login-Versuche aus der Session
     attempts_key = f'attempts_{email}'
     attempts = session.get(attempts_key, 0)
 
@@ -190,11 +179,10 @@ def api_login():
             return jsonify(error='Account locked.', locked=True, remaining=0), 403
         return jsonify(error='Incorrect password.', remaining=remaining), 401
 
-    # Erfolg
     session[attempts_key] = 0
-    session['user_id'] = user['id']
+    session['user_id']   = user['id']
     session['user_name'] = user['name']
-    session['user_cc'] = user['credit_card']
+    session['user_cc']   = user['credit_card']
 
     return jsonify(
         message='Login successful.',
@@ -230,7 +218,6 @@ def api_get_transactions():
     finally:
         conn.close()
 
-    # Datum als String formatieren
     for t in txs:
         if isinstance(t['date'], datetime):
             t['date'] = t['date'].strftime('%Y-%m-%d %H:%M:%S')
@@ -265,19 +252,13 @@ def api_add_transaction():
                 (user_id, amount, category, description or '—')
             )
             conn.commit()
-
-            # Balance neu berechnen
             cur.execute("SELECT amount FROM transactions WHERE user_id = %s", (user_id,))
             all_txs = cur.fetchall()
     finally:
         conn.close()
 
     balance = sum(float(t['amount']) for t in all_txs)
-
-    return jsonify(
-        message='Transaction added.',
-        balance=balance,
-    ), 201
+    return jsonify(message='Transaction added.', balance=balance), 201
 
 
 @app.route('/api/transactions/category', methods=['GET'])
@@ -310,5 +291,5 @@ def api_category_total():
 # ══════════════════════════════════════════
 
 if __name__ == '__main__':
-    init_db()   # Tabellen automatisch erstellen
+    init_db()
     app.run(debug=True)
