@@ -1,23 +1,27 @@
 
 import re
 import hashlib
+import os
 from datetime import datetime
+from dotenv import load_dotenv
 import pymysql
 from flask import Flask, request, jsonify, session, render_template
 
+load_dotenv()
+
 app = Flask(__name__)
-app.secret_key = 'ledger_secret_key_2024'
+app.secret_key = os.getenv('SECRET_KEY', 'fallback_secret_key')
 
 # ──────────────────────────────────────────
 # Datenbankverbindung
 # ──────────────────────────────────────────
 
 DB_CONFIG = {
-    'host':        '127.0.0.1',
-    'port':        3307,
-    'user':        'root',
-    'password':    '',
-    'db':          'ledger',
+    'host':        os.getenv('DB_HOST', 'localhost'),
+    'port':        int(os.getenv('DB_PORT', 3306)),
+    'user':        os.getenv('DB_USER', 'root'),
+    'password':    os.getenv('DB_PASSWORD', ''),
+    'db':          os.getenv('DB_NAME', 'ledger'),
     'charset':     'utf8mb4',
     'cursorclass': pymysql.cursors.DictCursor
 }
