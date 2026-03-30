@@ -1,0 +1,187 @@
+body {
+    background-image: url('background.jpeg');
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    display: flex;
+    min-height: 100vh;
+    margin: 0;
+    background-size: cover;
+    background-position: center;
+}
+
+.list-gruop {
+    height: 50px;
+    width: 120px;
+}
+
+.card {
+    background-color: rgb(95, 81, 62);
+    border-radius: 25px;
+    height: 400px;
+    width: 400px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0 0 1rem rgb(68, 66, 63);
+    margin-top: 50px;
+
+}
+
+
+.box {
+    height: 100px;
+    width: 100px;
+    border-radius: 10px;
+    border: none;
+    box-shadow: inset 0 0 1rem rgb(138, 133, 128);
+    background-color: rgb(172, 166, 158);
+    font-size: 60px;
+    color: rgb(68, 66, 63);
+    font-weight: bold;
+
+}
+
+.game {
+    display: grid;
+    grid-template-columns: repeat(3, 100px);
+    grid-template-rows: repeat(3, 100px);
+    gap: 15px;
+}
+
+h1 {
+    color: rgb(83, 71, 55);
+    font-size: 75px;
+    font-family: 'DynaPuff', cursive;
+    font-weight: bold;
+}
+
+.list-group-item.active {
+    background-color: rgb(95, 81, 62) !important;
+    border-color: rgb(83, 71, 55) !important;
+    border-width: 2px;
+    color: antiquewhite !important;
+}
+
+.list-group-item.d-flex {
+    height: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: rgb(192, 186, 178) !important;
+    border-color: rgb(95, 81, 62) !important;
+}
+
+.hide {
+    display: none;
+}
+
+#msg {
+    font-size: 40px;
+    color: antiquewhite;
+    text-shadow: 2px 2px 5px rgb(83, 71, 55);
+    font-family: 'DynaPuff', cursive;
+    font-weight: bold;
+}
+
+.winner-highlight {
+    background-color: rgb(194, 187, 178) !important;
+    box-shadow: 0 0 15px rgba(255, 255, 255, 0.6);
+    border: 2px solid antiquewhite !important;
+}
+
+.game-footer {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    padding: 15px 25px;
+    pointer-events: none;
+}
+
+.footer-content {
+    font-family: 'DynaPuff', cursive;
+    color: antiquewhite;
+    font-size: 1.1rem;
+    font-weight: bold;
+    text-shadow: 1px 1px 2px rgba(65, 55, 43, 0.884);
+    letter-spacing: 1px;
+}
+
+#reset {
+    background-color: rgba(95, 81, 62, 0);
+    color: rgb(88, 80, 69);
+    border: 3px solid rgb(83, 71, 55);
+    font-family: 'DynaPuff', cursive;
+    font-weight: bold;
+    font-size: large;
+    transition: all 0.5s ease;
+    width: 200px;
+    height: 50px;
+}
+
+#reset:hover {
+    background-color: rgb(83, 71, 55);
+    color: white;
+}
+
+@keyframes pulse {
+    0% {
+        transform: scale(1);
+    }
+
+    50% {
+        transform: scale(1.2);
+    }
+
+    100% {
+        transform: scale(1);
+    }
+}
+
+.winner-highlight i {
+    animation: pulse 0.8s infinite ease-in-out;
+    color: rgb(114, 95, 66);
+}
+
+.fa-solid-fa-mug-saucer {
+    color: rgb(95, 81, 62);
+}
+
+.fa-solid-fa-cookie {
+    color: rgb(95, 81, 62);
+}
+
+.game-footer {
+    position: relative;
+    z-index: 9999;
+}
+
+.game-footer a {
+    pointer-events: auto !important;
+    cursor: pointer;
+}
+
+
+.imprint-btn {
+    position: fixed; 
+    bottom: 20px; 
+    right: 20px; 
+    background-color: #534737; 
+    color: white !important; 
+    padding: 10px 20px; 
+    border-radius: 30px; 
+    text-decoration: none; 
+    font-weight: bold; 
+    box-shadow: 0 4px 10px rgba(0,0,0,0.3); 
+    z-index: 9999; 
+    font-family: sans-serif;
+    border: 2px solid #fff;
+    transition: transform 0.2s, background-color 0.2s;
+}
+
+.imprint-btn:hover {
+    background-color: #3e3529;
+    transform: scale(1.05); 
+    color: #fff;
+}
