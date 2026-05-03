@@ -7,8 +7,9 @@ from dotenv import load_dotenv
 import pymysql
 from flask import Flask, request, jsonify, session, render_template
 
+# Load environment variables from .env file
 load_dotenv()
-
+# Flask App Setup
 app = Flask(__name__)
 app.secret_key = os.getenv('SECRET_KEY', 'fallback_secret_key')
 
@@ -97,10 +98,10 @@ def mask_credit_card(number):
 # ══════════════════════════════════════════
 # Business Logic
 # ══════════════════════════════════════════
-
+# Here we can add more complex calculations or data processing if needed.
 def calculate_total(transactions):
     return sum(float(t['amount']) for t in transactions)
-
+# For example, we could calculate totals by category:
 def total_by_category(transactions, category):
     return sum(float(t['amount']) for t in transactions
                if t['category'].lower() == category.lower())
@@ -118,7 +119,7 @@ def index():
 # ══════════════════════════════════════════
 # Flask Routes – API
 # ══════════════════════════════════════════
-
+#All API routes return JSON responses and appropriate HTTP status codes for success and error cases.
 @app.route('/api/register', methods=['POST'])
 def api_register():
     data     = request.json
@@ -194,7 +195,7 @@ def api_login():
         credit_card=user['credit_card'],
     ), 200
 
-
+# This route allows users to log out by clearing their session data.
 @app.route('/api/logout', methods=['POST'])
 def api_logout():
     session.clear()
@@ -204,7 +205,8 @@ def api_logout():
 def get_current_user_id():
     return session.get('user_id')
 
-
+# This route retrieves all transactions for the logged-in user, formats the date and amount for JSON serialization,
+#  and returns the transactions along with the current balance.
 @app.route('/api/transactions', methods=['GET'])
 def api_get_transactions():
     user_id = get_current_user_id()
@@ -229,7 +231,7 @@ def api_get_transactions():
 
     return jsonify(transactions=txs, balance=calculate_total(txs))
 
-
+# This route allows the logged-in user to add a new transaction. It validates the input data, inserts the transaction into the database, and returns the updated balance.
 @app.route('/api/transactions', methods=['POST'])
 def api_add_transaction():
     user_id = get_current_user_id()
@@ -264,7 +266,8 @@ def api_add_transaction():
     balance = sum(float(t['amount']) for t in all_txs)
     return jsonify(message='Transaction added.', balance=balance), 201
 
-
+# This route calculates the total amount for a specific category of transactions for the logged-in user. 
+# It validates the category input, retrieves the relevant transactions from the database, and returns the total amount for that category.
 @app.route('/api/transactions/category', methods=['GET'])
 def api_category_total():
     user_id = get_current_user_id()

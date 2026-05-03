@@ -41,11 +41,11 @@ def test_validate_password():
     assert validate_password("Abcd1@") is True
     assert validate_password("StrongPass1#") is True
 
-    assert validate_password("Ab1@") is False        # zu kurz
-    assert validate_password("abcd1@") is False      # kein Großbuchstabe
-    assert validate_password("ABCD1@") is False      # kein Kleinbuchstabe
-    assert validate_password("Abcde@") is False      # keine Zahl
-    assert validate_password("Abcde1") is False      # kein Sonderzeichen
+    assert validate_password("Ab1@") is False        # too short
+    assert validate_password("abcd1@") is False      # missing uppercase letter
+    assert validate_password("ABCD1@") is False      # missing lowercase letter
+    assert validate_password("Abcde@") is False      # missing digit
+    assert validate_password("Abcde1") is False      # missing special character
     assert validate_password("") is False
 
 
@@ -59,9 +59,9 @@ def test_validate_credit_card():
     assert validate_credit_card("5111111111111111") is True   # Mastercard
     assert validate_credit_card("5511111111111111") is True   # Mastercard
 
-    assert validate_credit_card("411111111111") is False      # zu kurz
-    assert validate_credit_card("6111111111111111") is False  # ungültiger Prefix
-    assert validate_credit_card("41111111111111ab") is False  # Buchstaben
+    assert validate_credit_card("411111111111") is False      # too short
+    assert validate_credit_card("6111111111111111") is False  # invalid prefix
+    assert validate_credit_card("41111111111111ab") is False  # contains letters
     assert validate_credit_card("") is False
 
 
@@ -82,7 +82,7 @@ def test_hash_and_verify_password():
 # ----------------------
 
 def test_mask_credit_card():
-    # Flask-Version gibt "**** **** **** XXXX" zurück
+    # Flask version returns "**** **** **** XXXX"
     assert mask_credit_card("4111111111111111") == "**** **** **** 1111"
     assert mask_credit_card("5511111111111111") == "**** **** **** 1111"
 
@@ -92,7 +92,7 @@ def test_mask_credit_card():
 # ----------------------
 
 def test_calculate_total():
-    # calculate_total erwartet eine Liste von Dicts mit "amount"
+    # calculate_total expects a list of dicts with an "amount" field
     t1 = {"amount": 100.0, "category": "Food",      "description": "Groceries"}
     t2 = {"amount": 50.5,  "category": "Transport",  "description": "Bus ticket"}
     t3 = {"amount": 25.0,  "category": "Food",       "description": "Coffee"}
@@ -107,10 +107,10 @@ def test_calculate_total():
 # ----------------------
 
 def test_total_by_category():
-    # total_by_category erwartet ebenfalls Dicts
+    # total_by_category also expects dicts
     t1 = {"amount": 100.0, "category": "Food",      "description": "Groceries"}
     t2 = {"amount": 50.0,  "category": "Transport",  "description": "Bus"}
-    t3 = {"amount": 25.0,  "category": "food",       "description": "Coffee"}  # Kleinschreibung
+    t3 = {"amount": 25.0,  "category": "food",       "description": "Coffee"}  # lowercase category
 
     assert total_by_category([t1, t2, t3], "Food") == 125.0
     assert total_by_category([t1, t2, t3], "Transport") == 50.0
