@@ -1,16 +1,20 @@
 'use strict';
 
+// Escape user-supplied text before inserting it into HTML.
+// This ensures any special characters are safely encoded.
 function escHtml(str) {
   return String(str)
     .replace(/&/g, '&amp;').replace(/</g, '&lt;')
     .replace(/>/g, '&gt;').replace(/"/g, '&quot;');
 }
 
+// Convert a numeric amount to a localized Euro string.
 function formatEur(amount) {
   const abs  = Math.abs(amount).toLocaleString('de-AT', { minimumFractionDigits: 2 });
   return (amount < 0 ? '−' : '') + '€' + abs;
 }
 
+// Switch the visible app screen by toggling active classes.
 function showScreen(name) {
   document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
   const el = document.getElementById('screen-' + name);
@@ -18,6 +22,7 @@ function showScreen(name) {
   el.classList.add('active');
 }
 
+// Display an alert box with a message and optional style.
 function showAlert(id, message, type = 'error') {
   const el   = document.getElementById(id);
   const icon = type === 'error' ? '⚠' : type === 'success' ? '✓' : 'ℹ';
@@ -25,11 +30,13 @@ function showAlert(id, message, type = 'error') {
   el.innerHTML = `<span class="alert-icon">${icon}</span><span>${escHtml(message)}</span>`;
 }
 
+// Reset an alert container to its hidden default state.
 function hideAlert(id) {
   const el = document.getElementById(id);
   if (el) el.className = 'alert';
 }
 
+// Perform a JSON API request and return a normalized response.
 async function api(method, path, body = null) {
   const opts = { method, headers: { 'Content-Type': 'application/json' } };
   if (body) opts.body = JSON.stringify(body);
@@ -38,6 +45,7 @@ async function api(method, path, body = null) {
   return { ok: res.ok, status: res.status, data };
 }
 
+// Handle user registration from the registration screen.
 async function doRegister() {
   hideAlert('reg-alert');
   const name     = document.getElementById('reg-name').value.trim();
@@ -58,6 +66,7 @@ async function doRegister() {
   showScreen('login');
 }
 
+// Handle login form submission and display form errors as needed.
 async function doLogin() {
   hideAlert('login-alert');
   const email    = document.getElementById('login-email').value.trim();
@@ -89,6 +98,7 @@ async function doLogin() {
   openDashboard(data);
 }
 
+// Initialize and display the main dashboard after a successful login.
 function openDashboard(userData) {
   document.getElementById('sb-name').textContent   = userData.name;
   document.getElementById('sb-avatar').textContent = userData.name[0].toUpperCase();
@@ -101,6 +111,7 @@ function openDashboard(userData) {
   document.querySelector('[data-panel="panel-add"]').classList.add('active');
 }
 
+// Fetch the current account balance and update the sidebar display.
 async function loadBalance() {
   const { ok, data } = await api('GET', '/api/transactions');
   if (!ok) return;
@@ -110,11 +121,13 @@ async function loadBalance() {
   el.className   = 'balance-amount' + (bal < 0 ? ' is-negative' : '');
 }
 
+// Log out the user and return to the registration screen.
 async function doLogout() {
   await api('POST', '/api/logout');
   showScreen('register');
 }
 
+// Switch between dashboard panels and render transactions when needed.
 function switchPanel(btn) {
   const panelId = btn.dataset.panel;
   document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
@@ -124,6 +137,7 @@ function switchPanel(btn) {
   if (panelId === 'panel-list') renderTransactions();
 }
 
+// Submit a new transaction and refresh the displayed balance.
 async function doAddTx() {
   hideAlert('tx-alert');
   const amount      = parseFloat(document.getElementById('tx-amount').value);
@@ -148,6 +162,7 @@ async function doAddTx() {
   setTimeout(() => hideAlert('tx-alert'), 2600);
 }
 
+// Load and render the transaction history on the list panel.
 async function renderTransactions() {
   const container = document.getElementById('tx-tbody');
   container.innerHTML = '<div class="empty-state"><p>Loading…</p></div>';
@@ -184,6 +199,7 @@ async function renderTransactions() {
   }).join('');
 }
 
+// Fetch summary totals for the requested transaction category.
 async function doFilterCat() {
   const cat = document.getElementById('cat-input').value.trim();
   if (!cat) return;
