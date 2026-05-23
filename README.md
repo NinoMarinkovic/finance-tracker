@@ -1,6 +1,8 @@
 # Finance Tracker
 
-A full-stack personal finance web application built with Python, Flask and MySQL.
+A personal finance web app built with Python, Flask and MySQL.
+
+**Live:** https://finance-tracker-ohtz.onrender.com
 
 ## Features
 
@@ -19,12 +21,14 @@ A full-stack personal finance web application built with Python, Flask and MySQL
 | Database | MySQL, pymysql |
 | Frontend | HTML, CSS, JavaScript |
 | Testing | pytest |
+| Hosting | Render |
+| Database Hosting | Aiven (MySQL Cloud) |
 
 ## Project Structure
 
 ```
 finance-tracker/
-├── project.py          # Flask backend & REST API
+├── projects.py         # Flask backend & REST API
 ├── test_project.py     # Unit tests
 ├── requirements.txt    # Dependencies
 ├── README.md
@@ -56,22 +60,37 @@ cd finance-tracker
 pip install -r requirements.txt
 ```
 
-3. Create the database in phpMyAdmin (or MySQL CLI)
+3. Set up environment variables — create a `.env` file:
+```
+DB_HOST=localhost
+DB_PORT=3306
+DB_USER=root
+DB_PASSWORD=
+DB_NAME=ledger
+```
+
+4. Create the database in phpMyAdmin (or MySQL CLI)
 ```sql
 CREATE DATABASE ledger;
 ```
 
-4. Start the app
+5. Start the app
 ```bash
-python project.py
+python projects.py
 ```
 
-5. Open your browser
+6. Open your browser
 ```
 http://127.0.0.1:5000
 ```
 
 The database tables are created automatically on first launch.
+
+## Deployment
+
+The app is deployed on **Render** with a cloud MySQL database on **Aiven**.
+
+Environment variables are configured via Render's dashboard — no secrets are stored in the repository.
 
 ## API Endpoints
 
@@ -96,3 +115,4 @@ pytest test_project.py
 - Credit card numbers are masked before storage
 - Login is locked after 3 failed attempts
 - Input validation on both client and server side
+- Environment variables used for all sensitive config — never hardcoded
