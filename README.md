@@ -41,13 +41,14 @@ finance-tracker/
 
 ## Getting Started
 
-### Prerequisites
+### Option A — Run locally with XAMPP
+
+#### Prerequisites
 
 - Python 3.x
-- MySQL (e.g. via XAMPP)
-- A running MySQL server with a database named `ledger`
+- XAMPP (MySQL via phpMyAdmin)
 
-### Installation
+#### Installation
 
 1. Clone the repository
 ```bash
@@ -60,7 +61,14 @@ cd finance-tracker
 pip install -r requirements.txt
 ```
 
-3. Set up environment variables — create a `.env` file:
+3. Start XAMPP and make sure MySQL is running
+
+4. Create the database in phpMyAdmin (or MySQL CLI)
+```sql
+CREATE DATABASE ledger;
+```
+
+5. Create a `.env` file:
 ```
 DB_HOST=localhost
 DB_PORT=3306
@@ -69,28 +77,46 @@ DB_PASSWORD=
 DB_NAME=ledger
 ```
 
-4. Create the database in phpMyAdmin (or MySQL CLI)
-```sql
-CREATE DATABASE ledger;
-```
-
-5. Start the app
+6. Start the app
 ```bash
 python projects.py
 ```
 
-6. Open your browser
+7. Open your browser
 ```
 http://127.0.0.1:5000
 ```
 
 The database tables are created automatically on first launch.
 
-## Deployment
+---
+
+### Option B — Live Deployment (Render + Aiven)
 
 The app is deployed on **Render** with a cloud MySQL database on **Aiven**.
 
+**Live URL:** https://finance-tracker-ohtz.onrender.com
+
+#### Prerequisites
+
+- A free [Aiven](https://aiven.io) account for the MySQL database
+- A free [Render](https://render.com) account for hosting
+
+#### Environment Variables on Render
+
+Set the following in Render → Environment:
+
+| Key | Value |
+|-----|-------|
+| `DB_HOST` | your Aiven host |
+| `DB_PORT` | your Aiven port |
+| `DB_USER` | your Aiven user |
+| `DB_PASSWORD` | your Aiven password |
+| `DB_NAME` | defaultdb |
+
 Environment variables are configured via Render's dashboard — no secrets are stored in the repository.
+
+---
 
 ## API Endpoints
 
