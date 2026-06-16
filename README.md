@@ -1,6 +1,22 @@
 # Finance Tracker
 
-A full-stack personal finance web application built with Python, Flask and MySQL.
+A personal finance web app to track income and expenses, filter by category, and manage transactions — built with Python, Flask and MySQL.
+
+[![Live Demo](https://img.shields.io/badge/demo-live-brightgreen)](https://finance-tracker-ohtz.onrender.com)
+[![GitHub](https://img.shields.io/badge/GitHub-NinoMarinkovic%2Ffinance--tracker-181717?logo=github)](https://github.com/NinoMarinkovic/finance-tracker)
+[![License](https://img.shields.io/badge/license-MIT-blue)](LICENSE)
+
+---
+
+## Tech Stack
+
+**Backend:** Python, Flask  
+**Database:** MySQL, PyMySQL (Aiven Cloud)  
+**Frontend:** HTML, CSS, JavaScript  
+**Testing:** pytest  
+**Hosting:** Render  
+
+---
 
 ## Features
 
@@ -8,26 +24,18 @@ A full-stack personal finance web application built with Python, Flask and MySQL
 - **Transaction Management** — Add, view and manage income and expenses
 - **Category Filtering** — Calculate totals by spending category
 - **Persistent Storage** — All data stored in a MySQL database
-- **Responsive UI** — Clean, professional interface that works on all screen sizes
+- **Responsive UI** — Clean interface that works on all screen sizes
 - **Unit Tests** — Core logic covered with pytest
 
-## Tech Stack
-
-| Layer | Technology |
-|-------|-----------|
-| Backend | Python, Flask |
-| Database | MySQL, pymysql |
-| Frontend | HTML, CSS, JavaScript |
-| Testing | pytest |
+---
 
 ## Project Structure
 
 ```
 finance-tracker/
-├── project.py          # Flask backend & REST API
+├── projects.py         # Flask backend & REST API
 ├── test_project.py     # Unit tests
 ├── requirements.txt    # Dependencies
-├── README.md
 ├── templates/
 │   └── index.html      # Main HTML template
 └── static/
@@ -35,43 +43,61 @@ finance-tracker/
     └── app.js          # Frontend logic & API calls
 ```
 
+---
+
 ## Getting Started
 
-### Prerequisites
+### Option A — Run locally with XAMPP
 
-- Python 3.x
-- MySQL (e.g. via XAMPP)
-- A running MySQL server with a database named `ledger`
+**Prerequisites:** Python 3.x, XAMPP (MySQL via phpMyAdmin)
 
-### Installation
-
-1. Clone the repository
 ```bash
 git clone https://github.com/NinoMarinkovic/finance-tracker.git
 cd finance-tracker
-```
-
-2. Install dependencies
-```bash
 pip install -r requirements.txt
 ```
 
-3. Create the database in phpMyAdmin (or MySQL CLI)
+Start XAMPP, then create the database:
+
 ```sql
 CREATE DATABASE ledger;
 ```
 
-4. Start the app
+Create a `.env` file:
+
+```
+DB_HOST=localhost
+DB_PORT=3306
+DB_USER=root
+DB_PASSWORD=
+DB_NAME=ledger
+```
+
 ```bash
-python project.py
+python projects.py
 ```
 
-5. Open your browser
-```
-http://127.0.0.1:5000
-```
+Open `http://127.0.0.1:5000` — tables are created automatically on first launch.
 
-The database tables are created automatically on first launch.
+---
+
+### Option B — Live Deployment (Render + Aiven)
+
+**Live URL:** https://finance-tracker-ohtz.onrender.com
+
+Set the following environment variables in Render → Environment:
+
+| Key | Value |
+|-----|-------|
+| `DB_HOST` | your Aiven host |
+| `DB_PORT` | your Aiven port |
+| `DB_USER` | your Aiven user |
+| `DB_PASSWORD` | your Aiven password |
+| `DB_NAME` | defaultdb |
+
+No secrets are stored in the repository.
+
+---
 
 ## API Endpoints
 
@@ -84,15 +110,26 @@ The database tables are created automatically on first launch.
 | POST | `/api/transactions` | Add a transaction |
 | GET | `/api/transactions/category` | Get total by category |
 
+---
+
 ## Running Tests
 
 ```bash
 pytest test_project.py
 ```
 
+---
+
 ## Security
 
-- Passwords are hashed using PBKDF2-HMAC-SHA256
-- Credit card numbers are masked before storage
-- Login is locked after 3 failed attempts
-- Input validation on both client and server side
+- Passwords hashed with PBKDF2-HMAC-SHA256
+- Credit card numbers masked before storage
+- Login locked after 3 failed attempts
+- Input validation on client and server side
+- All sensitive config via environment variables — never hardcoded
+
+---
+
+## License
+
+MIT — see [LICENSE](LICENSE)
