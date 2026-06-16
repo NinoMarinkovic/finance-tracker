@@ -1,8 +1,22 @@
 # Finance Tracker
 
-A personal finance web app built with Python, Flask and MySQL.
+A personal finance web app to track income and expenses, filter by category, and manage transactions — built with Python, Flask and MySQL.
 
-**Live:** https://finance-tracker-ohtz.onrender.com
+[![Live Demo](https://img.shields.io/badge/demo-live-brightgreen)](https://finance-tracker-ohtz.onrender.com)
+[![GitHub](https://img.shields.io/badge/GitHub-NinoMarinkovic%2Ffinance--tracker-181717?logo=github)](https://github.com/NinoMarinkovic/finance-tracker)
+[![License](https://img.shields.io/badge/license-MIT-blue)](LICENSE)
+
+---
+
+## Tech Stack
+
+**Backend:** Python, Flask  
+**Database:** MySQL, PyMySQL (Aiven Cloud)  
+**Frontend:** HTML, CSS, JavaScript  
+**Testing:** pytest  
+**Hosting:** Render  
+
+---
 
 ## Features
 
@@ -10,19 +24,10 @@ A personal finance web app built with Python, Flask and MySQL.
 - **Transaction Management** — Add, view and manage income and expenses
 - **Category Filtering** — Calculate totals by spending category
 - **Persistent Storage** — All data stored in a MySQL database
-- **Responsive UI** — Clean, professional interface that works on all screen sizes
+- **Responsive UI** — Clean interface that works on all screen sizes
 - **Unit Tests** — Core logic covered with pytest
 
-## Tech Stack
-
-| Layer | Technology |
-|-------|-----------|
-| Backend | Python, Flask |
-| Database | MySQL, pymysql |
-| Frontend | HTML, CSS, JavaScript |
-| Testing | pytest |
-| Hosting | Render |
-| Database Hosting | Aiven (MySQL Cloud) |
+---
 
 ## Project Structure
 
@@ -31,7 +36,6 @@ finance-tracker/
 ├── projects.py         # Flask backend & REST API
 ├── test_project.py     # Unit tests
 ├── requirements.txt    # Dependencies
-├── README.md
 ├── templates/
 │   └── index.html      # Main HTML template
 └── static/
@@ -39,36 +43,28 @@ finance-tracker/
     └── app.js          # Frontend logic & API calls
 ```
 
+---
+
 ## Getting Started
 
 ### Option A — Run locally with XAMPP
 
-#### Prerequisites
+**Prerequisites:** Python 3.x, XAMPP (MySQL via phpMyAdmin)
 
-- Python 3.x
-- XAMPP (MySQL via phpMyAdmin)
-
-#### Installation
-
-1. Clone the repository
 ```bash
 git clone https://github.com/NinoMarinkovic/finance-tracker.git
 cd finance-tracker
-```
-
-2. Install dependencies
-```bash
 pip install -r requirements.txt
 ```
 
-3. Start XAMPP and make sure MySQL is running
+Start XAMPP, then create the database:
 
-4. Create the database in phpMyAdmin (or MySQL CLI)
 ```sql
 CREATE DATABASE ledger;
 ```
 
-5. Create a `.env` file:
+Create a `.env` file:
+
 ```
 DB_HOST=localhost
 DB_PORT=3306
@@ -77,34 +73,19 @@ DB_PASSWORD=
 DB_NAME=ledger
 ```
 
-6. Start the app
 ```bash
 python projects.py
 ```
 
-7. Open your browser
-```
-http://127.0.0.1:5000
-```
-
-The database tables are created automatically on first launch.
+Open `http://127.0.0.1:5000` — tables are created automatically on first launch.
 
 ---
 
 ### Option B — Live Deployment (Render + Aiven)
 
-The app is deployed on **Render** with a cloud MySQL database on **Aiven**.
-
 **Live URL:** https://finance-tracker-ohtz.onrender.com
 
-#### Prerequisites
-
-- A free [Aiven](https://aiven.io) account for the MySQL database
-- A free [Render](https://render.com) account for hosting
-
-#### Environment Variables on Render
-
-Set the following in Render → Environment:
+Set the following environment variables in Render → Environment:
 
 | Key | Value |
 |-----|-------|
@@ -114,7 +95,7 @@ Set the following in Render → Environment:
 | `DB_PASSWORD` | your Aiven password |
 | `DB_NAME` | defaultdb |
 
-Environment variables are configured via Render's dashboard — no secrets are stored in the repository.
+No secrets are stored in the repository.
 
 ---
 
@@ -129,16 +110,26 @@ Environment variables are configured via Render's dashboard — no secrets are s
 | POST | `/api/transactions` | Add a transaction |
 | GET | `/api/transactions/category` | Get total by category |
 
+---
+
 ## Running Tests
 
 ```bash
 pytest test_project.py
 ```
 
+---
+
 ## Security
 
-- Passwords are hashed using PBKDF2-HMAC-SHA256
-- Credit card numbers are masked before storage
-- Login is locked after 3 failed attempts
-- Input validation on both client and server side
-- Environment variables used for all sensitive config — never hardcoded
+- Passwords hashed with PBKDF2-HMAC-SHA256
+- Credit card numbers masked before storage
+- Login locked after 3 failed attempts
+- Input validation on client and server side
+- All sensitive config via environment variables — never hardcoded
+
+---
+
+## License
+
+MIT — see [LICENSE](LICENSE)
