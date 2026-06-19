@@ -18,6 +18,22 @@ A personal finance web app to track income and expenses, filter by category, and
 
 ---
 
+## Screenshots
+
+![Finance Tracker Dashboard](https://via.placeholder.com/900x360.png?text=Finance+Tracker+Dashboard)
+
+![Transactions List](https://via.placeholder.com/900x360.png?text=Transactions+List)
+
+![Category Summary](https://via.placeholder.com/900x360.png?text=Category+Summary)
+
+Screenshot Links:
+
+- [Dashboard](https://via.placeholder.com/900x360.png?text=Finance+Tracker+Dashboard)
+- [Transactions List](https://via.placeholder.com/900x360.png?text=Transactions+List)
+- [Category Summary](https://via.placeholder.com/900x360.png?text=Category+Summary)
+
+---
+
 ## Features
 
 - **User Authentication** — Register and login with secure password hashing and a 3-attempt lockout
