@@ -292,6 +292,23 @@ def api_category_total():
     total = sum(float(t['amount']) for t in txs)
     return jsonify(category=category, total=total)
 
+    # ══════════════════════════════════════════
+# Datenbank beim Start initialisieren
+# ══════════════════════════════════════════
+
+try:
+    init_db()
+    print("Database initialized successfully.")
+except Exception as e:
+    print(f"Database initialization failed: {e}")
+
+# ══════════════════════════════════════════
+# Start
+# ══════════════════════════════════════════
+
+if __name__ == '__main__':
+    app.run(debug=True)
+
 
 # ══════════════════════════════════════════
 # Start
