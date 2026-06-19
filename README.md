@@ -20,11 +20,11 @@ A personal finance web app to track income and expenses, filter by category, and
 
 ## Screenshots
 
-![Finance Tracker Dashboard](https://via.placeholder.com/900x360.png?text=Finance+Tracker+Dashboard)
+![Finance Tracker Dashboard](static/images/screenshots/dashboard.png)
 
-![Transactions List](https://via.placeholder.com/900x360.png?text=Transactions+List)
+![Transactions List](static/images/screenshots/transactions.png)
 
-![Category Summary](https://via.placeholder.com/900x360.png?text=Category+Summary)
+![Category Summary](static/images/screenshots/categorysummary.png)
 
 Screenshot Links:
 
